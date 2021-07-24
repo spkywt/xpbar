@@ -42,7 +42,7 @@ require 'helpers'
 -- Config - Editable, but may not look great.
 ----------------------------------------------------------------------------------------------------
 barwidth						=	472;
-barheight						=	8;
+barheight						=	5;
 
 ----------------------------------------------------------------------------------------------------
 -- Local Variables -- Do not edit below this point.
