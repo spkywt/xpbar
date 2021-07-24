@@ -48,6 +48,7 @@ barheight						=	5;
 -- Local Variables -- Do not edit below this point.
 ----------------------------------------------------------------------------------------------------
 local player					=	AshitaCore:GetDataManager():GetPlayer();
+local party						=	AshitaCore:GetDataManager():GetParty();
 local JobMaskInverted			=	table_invert(JobMask);
 local ExpCurrent				=	0;
 local variables 				=
@@ -91,14 +92,18 @@ local function ShowXpBar()
 		local MJ = JobMaskInverted[math.pow(2, player:GetMainJob())];
 		local MJLv = player:GetMainJobLevel();
 		local SJ = JobMaskInverted[math.pow(2, player:GetSubJob())];
-		local SJLv = player:GetSubJobLevel();
+		--local SJLv = player:GetSubJobLevel();
 		local fillwidth = ExpCurrent / ExpNeeded * (barwidth - 4);
 		
 		imgui.Image(imgBarBg:Get(), barwidth, barheight);
 		imgui.SetCursorPos(2,0);
 		imgui.Image(imgBarFg:Get(), fillwidth, barheight);
 		imgui.SetCursorPos(barwidth / 100, barheight + 1);
-		imgui.Text(('Lv.%s   %s/%s   EXP %s/%s'):format(MJLv, MJ, SJ, comma_value(ExpCurrent), comma_value(ExpNeeded)));
+		if (SJ) then
+			imgui.Text(('Lv.%s   %s/%s   EXP %s/%s'):format(MJLv, MJ, SJ, comma_value(ExpCurrent), comma_value(ExpNeeded)));
+		else
+			imgui.Text(('Lv.%s   %s   EXP %s/%s'):format(MJLv, MJ, comma_value(ExpCurrent), comma_value(ExpNeeded)));
+		end
     end
 	
 	imgui.End();
@@ -168,7 +173,7 @@ end);
 -- desc: Called when the addon is rendering.
 ----------------------------------------------------------------------------------------------------
 ashita.register_event('render', function()
-	if (player:GetMainJobLevel() ~= 0) then
+	if (party:GetMemberName(0) ~= '' and player:GetMainJobLevel() ~= 0) then
 		if (imgui.GetVarValue(variables['var_ShowXpBar' ][1])) then ShowXpBar(); end
 	end
 end);
