@@ -42,7 +42,7 @@ require 'helpers'
 -- Config - Editable, but may not look great.
 ----------------------------------------------------------------------------------------------------
 barwidth						=	472;
-barheight						=	5;
+barheight						=	8;
 
 ----------------------------------------------------------------------------------------------------
 -- Local Variables -- Do not edit below this point.
@@ -96,14 +96,13 @@ local function ShowXpBar()
 		local fillwidth = ExpCurrent / ExpNeeded * (barwidth - 4);
 		
 		imgui.Image(imgBarBg:Get(), barwidth, barheight);
-		imgui.SetCursorPos(2,0);
+		imgui.SetCursorPos(4,0);
 		imgui.Image(imgBarFg:Get(), fillwidth, barheight);
 		imgui.SetCursorPos(barwidth / 100, barheight + 1);
-		if (SJ) then
-			imgui.Text(('Lv.%s   %s/%s   EXP %s/%s'):format(MJLv, MJ, SJ, comma_value(ExpCurrent), comma_value(ExpNeeded)));
-		else
-			imgui.Text(('Lv.%s   %s   EXP %s/%s'):format(MJLv, MJ, comma_value(ExpCurrent), comma_value(ExpNeeded)));
-		end
+		if (SJ) then imgui.Text(('Lv.%s  %s/%s'):format(MJLv, MJ, SJ));
+			else imgui.Text(('Lv.%s  %s'):format(MJLv, MJ)); end
+		imgui.SameLine(imgui.GetWindowWidth() - 123);
+		imgui.Text(string.format("%17s", ('EXP %s/%s'):format(comma_value(ExpCurrent), comma_value(ExpNeeded))));
     end
 	
 	imgui.End();
